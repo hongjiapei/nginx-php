@@ -13,7 +13,7 @@ ENV PHP_DIR /usr/local/php
 ENV NGINX_DIR /usr/local/nginx
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-        && apk add --no-cache --virtual .persistent-deps ca-certificates curl pcre libzip zlib freetype libpng jpeg libcrypto1.1 libssl1.1 libressl libstdc++ gettext bison \
+        && apk add --no-cache --virtual .persistent-deps ca-certificates curl pcre libzip zlib freetype libpng jpeg libcrypto1.1 libssl1.1 libressl libstdc++ gettext-dev gettext bison \
         && set -xe \
         && addgroup -g 82 -S $EXEC_USER \
         && adduser -u 82 -D -S -G $EXEC_USER $EXEC_USER \
@@ -23,7 +23,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
         \
 #开始安装php
         && export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" CPPFLAGS="-fstack-protector-strong -fpic -fpie -O2" LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
-        && apk add --no-cache --virtual .php-deps autoconf dpkg-dev dpkg file g++ gcc libzip-dev libc-dev make pkgconf re2c coreutils curl-dev freetype-dev libpng-dev jpeg-dev zlib-dev libedit-dev libressl-dev libsodium-dev libxml2-dev gettext-dev sqlite-dev  \
+        && apk add --no-cache --virtual .php-deps autoconf dpkg-dev dpkg file g++ gcc libzip-dev libc-dev make pkgconf re2c coreutils curl-dev freetype-dev libpng-dev jpeg-dev zlib-dev libedit-dev libressl-dev libsodium-dev libxml2-dev sqlite-dev  \
         \
 #安装libiconv  php的iconv函数需要  若不需要，可以省略
         && wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz && tar -xvf libiconv-1.15.tar.gz && rm -rf libiconv-1.15.tar.gz && cd libiconv-1.15 && ./configure --prefix=/usr/local/libiconv && make && make install && make clean && cd .. && rm -rf libiconv-1.15 \
